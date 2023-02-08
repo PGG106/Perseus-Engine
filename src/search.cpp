@@ -56,11 +56,10 @@ Score Game::search(Score alpha, Score beta, Depth depth) {
        // Account for mate values
        ttScore += ply * (ttScore < -mateValue);
        ttScore -= ply * (ttScore > mateValue);
-       
-       if (ttFlags & hashEXACT) return ttScore;
-       if ((ttFlags & hashALPHA)) alpha = std::max(alpha, ttScore);
-       else if ((ttFlags & hashBETA)) beta = std::min(beta, ttScore);
-       if (alpha >= beta) return ttScore;
+       if ((ttFlags == hashALPHA && ttScore <= alpha)
+           || (ttFlags & hashBETA && ttScore >= beta)
+           || (ttFlags & hashEXACT))
+           return ttScore;
     }
 #endif
 
