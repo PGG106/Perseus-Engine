@@ -112,10 +112,6 @@ inline std::string getMoveString(ScoredMove move){
 	return ss.str();
 }
 
-inline PackedMove packMove(Move move) {
-	return (move & 0xfff) | (movePromotion(move) << 12);
-}
-
 inline bool packedMoveCompare(PackedMove m1, Move m2) {
 	return packMove(m2) == m1;
 }

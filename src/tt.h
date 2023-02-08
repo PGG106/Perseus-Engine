@@ -22,7 +22,7 @@ struct ttEntry {
     ttEntry(HashKey h, U16 b, Depth d, U8 f, Score s);
     ttEntry();
     HashKey hashKey;         // 8
-    PackedMove bestMove;     // 2
+    Move bestMove;           // 4
     Depth depth;             // 1
     U8 flags = hashINVALID;  // 1
     Score score = -infinity; // 2
