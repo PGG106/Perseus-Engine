@@ -39,28 +39,6 @@ Score Game::search(Score alpha, Score beta, Depth depth) {
         if (alpha >= beta) return alpha;
     }
     
-    
-    //// TT probe
-    ttEntry* tte = probeTT(pos.hashKey);
-    Score ttScore = -infinity;
-    Move ttMove = 0;
-    U8 ttFlags;
-
-    if (tte != nullptr && !RootNode && tte->depth >= depth) {
-       ttScore = tte->score;
-       ttFlags = tte->flags;
-       ttMove = tte->bestMove;
-       
-       // Account for mate values
-       ttScore += ply * (ttScore < -mateValue);
-       ttScore -= ply * (ttScore > mateValue);
-       
-       if (ttFlags & hashEXACT) return ttScore;
-       if ((ttFlags & hashALPHA)) alpha = std::max(alpha, ttScore);
-       else if ((ttFlags & hashBETA)) beta = std::min(beta, ttScore);
-       if (alpha >= beta) return ttScore;
-    }
-
     // Quiescence drop
     if (depth <= 0) return quiescence(alpha, beta);
 
@@ -123,7 +101,6 @@ Score Game::search(Score alpha, Score beta, Depth depth) {
         if (alpha != origAlpha) ttStoreFlag = hashEXACT;
         else ttStoreFlag = hashALPHA;
     }
-    if (!stopped) writeTT(pos.hashKey, bestScore, -infinity, depth, ttStoreFlag, bestMove, ply);
     
     return bestScore;
 
@@ -137,9 +114,9 @@ Score Game::quiescence(Score alpha, Score beta){
 
     if (ply >= maxPly - 1) return standPat;
 
-    alpha = max(alpha, standing_pat);
+    alpha = std::max(alpha, standPat);
 
-    if (standing_pat >= beta) return standing_pat;
+    if (standPat >= beta) return standPat;
 
     // Generate moves
     MoveList moveList;
