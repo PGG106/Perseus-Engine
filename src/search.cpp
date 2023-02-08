@@ -66,7 +66,7 @@ Score Game::search(Score alpha, Score beta, Depth depth) {
             ++moveSearched;
             ++nodes;
             if (RootNode && depth >= LOGROOTMOVEDEPTH) {
-                std::cout << "info depth " << std::dec << (int)currSearch << " currmove " << getMoveString(currMove) << " currmovenumber " << moveSearched << " currmovescore " << currMoveScore << " hashfull " << hashfull() << std::endl;
+                std::cout << "info depth " << std::dec << (int)currSearch << " currmove " << getMoveString(currMove) << " currmovenumber " << moveSearched << " currmovescore " << currMoveScore << std::endl;
             }
             Score score = -search(-beta, -alpha, depth - 1);
             restore(save);
@@ -205,11 +205,11 @@ void Game::startSearch(bool halveTT = true){
         bestMove = pvTable[0][0];
         U64 timer2 = getTime64();
         if (score < -mateValue && score > -mateScore)
-            std::cout << std::dec << "info score mate " << -(mateScore + score + 2) / 2 << " depth " << (int)currSearch << " seldepth " << (int)seldepth << " nodes " << nodes << " hashfull " << hashfull() << " pv ";
+            std::cout << std::dec << "info score mate " << -(mateScore + score + 2) / 2 << " depth " << (int)currSearch << " seldepth " << (int)seldepth << " nodes " << nodes << " pv ";
         else if (score > mateValue && score < mateScore)
-            std::cout << std::dec << "info score mate " << (mateScore + 1 - score) / 2 << " depth " << (int)currSearch << " seldepth " << (int)seldepth << " nodes " << nodes << " hashfull " << hashfull() << " pv ";
+            std::cout << std::dec << "info score mate " << (mateScore + 1 - score) / 2 << " depth " << (int)currSearch << " seldepth " << (int)seldepth << " nodes " << nodes<< " pv ";
         else
-            std::cout << std::dec << "info score cp " << (score >> 1) << " depth " << (int)currSearch << " seldepth " << (int)seldepth << " nodes " << nodes << " hashfull " << hashfull() << " pv ";
+            std::cout << std::dec << "info score cp " << (score >> 1) << " depth " << (int)currSearch << " seldepth " << (int)seldepth << " nodes " << nodes  << " pv ";
 
         for (int i = 0; i < pvLen[0]; i++){
             printMove(pvTable[0][i]);

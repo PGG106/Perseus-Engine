@@ -102,34 +102,13 @@ void Game::reset(){
     ply = 0;
     repetitionCount = 0;
 
-    // Clear history, killer and counter move tables
-#if ENABLEHISTORYHEURISTIC
-    memset(historyTable, 0, sizeof(historyTable));
-    // memset(pieceFromHistoryTable, 0, sizeof(pieceFromHistoryTable));
-    // memset(pieceToHistoryTable, 0, sizeof(pieceToHistoryTable));
-#endif
-
-#if ENABLEKILLERHEURISTIC
-    memset(killerTable, 0, sizeof(killerTable));
-#endif
-
-#if ENABLECOUNTERMOVEHEURISTIC
-    memset(counterMoveTable, 0, sizeof(counterMoveTable));
-#endif
-
     // Clear pv len and pv table
     memset(pvLen, 0, sizeof(pvLen));
     memset(pvTable, 0, sizeof(pvTable));
 
     // Clear hashTable
-#if ENABLETTSCORING
-    memset(tt, 0, ttEntryCount * sizeof(ttEntry));
-#endif
 
-    // Clear eval cache
-#if USINGEVALCACHE
-    memset(evalHash, 0, evalHashSize * sizeof(evalHashEntry));
-#endif
+    memset(tt, 0, ttEntryCount * sizeof(ttEntry));
 
 }
 
@@ -214,9 +193,6 @@ bool Game::makeMove(Move move){
     repetitionTable[repetitionCount++] = pos.hashKey;
 #endif
     bool k = pos.makeMove(move);
-#if ENABLEPREFETCHING && ENABLETTSCORING
-    prefetch(&evalHash[pos.hashKey % evalHashSize]);
-#endif
     return k;
 }
 
@@ -242,10 +218,6 @@ bool Game::isRepetition() {
  * @return The static evaluation of the current position.
  */
 Score Game::evaluate(){
-
-#if USINGEVALCACHE && ENABLEPREFETCHING
-    prefetch(&evalHash[pos.hashKey % (evalHashSize)]);
-#endif
 
    // Before calling the static score evaluation, we must check for the interior node recognizer ( known endgames )
     bool side = pos.side;

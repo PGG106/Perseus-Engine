@@ -86,7 +86,6 @@ int executeCommand(Game* game, char* command) {
     // - bench
 
     if (uciNewGame){
-        initTT();
         game->reset();
         if (hashDumpFile != "") {
             std::cout << "info string Loading opening hash dump...\n";
@@ -216,40 +215,6 @@ int executeCommand(Game* game, char* command) {
         return 0;
     }
 
-    if (ttt) {
-        Position& pos = game->pos;
-        ttEntry* entry = probeTT(pos.hashKey);
-        if (!entry) {
-            std::cout << "No entry!\n";
-            return 0;
-        }
-        Depth depth;
-        Score score, eval;
-        HashKey hash;
-        Move bestMove;
-        U8 flags;
-
-        depth = entry->depth;
-        score = entry->score;
-        eval = entry->eval;
-        hash = entry->hashKey;
-        bestMove = entry->bestMove;
-        flags = entry->flags;
-
-        std::cout << "TT for hashKey " << std::hex << pos.hashKey << " (" << hash << std::dec << ") :\n";
-        std::cout << "Score: " << score << "\t\tStatic eval: " << eval << "\n";
-        std::cout << "Depth: " << (int)depth << "\n";
-        std::cout << "BestMove: " << getMoveString(bestMove) << "\n";
-        std::cout << "Flags:\n" <<
-            (flags & hashALPHA ? "\thashALPHA\n" : "") <<
-            (flags & hashBETA ? "\thashBETA\n" : "") <<
-            (flags & hashEXACT ? "\thashEXACT\n" : "") <<
-            (flags & hashSINGULAR ? "\thashALPHA\n" : "") <<
-            (flags & hashINVALID ? "\thashALPHA\n" : "") << "\n";
-    }
-
-
-    
 
     if (position) positionCommand(game, command);
     

@@ -32,7 +32,6 @@ struct ttEntry {
 
 // Transposition table and evaluation hash table
 extern ttEntry* tt;
-extern evalHashEntry* evalHash;
 
 /**
  * @brief The initTT function initializes the transposition table and evaluation cache.

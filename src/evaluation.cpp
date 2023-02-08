@@ -190,14 +190,6 @@ static inline constexpr BitBoard centralFiles() {
 
 Score pestoEval(Position* pos) {
 
-#if USINGEVALCACHE
-    Score cachedEval = getCachedEval(pos->hashKey);
-    if (cachedEval != -infinity) {
-        int fCs = std::min(60, std::max(0, pos->fiftyMove - 12));
-        return cachedEval * (100 - fCs) / 100;
-    }
-#endif
-
     auto const& bb = pos->bitboards;
     Score mg[2] = { 0,0 }, eg[2] = { 0,0 };
     Score whiteMaterial, blackMaterial;
@@ -1080,10 +1072,6 @@ Score pestoEval(Position* pos) {
     //if (res >= egValues[Q] + egValues[N]) res += (KNOWNWIN/2) - ((res) * abs(KNOWNWIN/2))/mateScore;
 	//if (res <= egValues[Q] + egValues[N]) res += (-KNOWNWIN / 2) - ((res) * abs(-KNOWNWIN / 2)) / mateScore;
     
-#if USINGEVALCACHE
-    // Cache res before scaling
-    cacheEval(pos->hashKey, res);
-#endif
     return res * (100 - fC) / 100;
 
     //return res * (195 - (pos->fiftyMove*2)) / 211;

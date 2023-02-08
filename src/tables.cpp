@@ -295,7 +295,6 @@ void initAll(){
     initSliderAttacks(false);
     initHashKeys();
     initTables();
-    initTT();
 }
 
 

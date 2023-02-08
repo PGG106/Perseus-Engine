@@ -22,7 +22,6 @@ const char *benchmarkfens[50] = {
 };
 
 S32 benchmark(){
-    initTT();
     U64 nodes = 0;
     U64 totalTime = 0;
     Game game;
