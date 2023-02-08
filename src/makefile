@@ -25,8 +25,6 @@ endif
 SOURCES := $(wildcard *.cpp)
 EXECUTABLE := $(NAME)$(SUFFIX)
 
-# Debug target
-debug: CXXFLAGS += -g -O0
 
 # Release target
 release: CXXFLAGS += -O3
