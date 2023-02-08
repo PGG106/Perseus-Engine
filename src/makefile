@@ -7,7 +7,7 @@ THIS := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 ROOT := $(realpath $(THIS)/..)
 CXX := g++
 TARGET:= Perseus
-CXXFLAGS := -Wall -std=c++17
+CXXFLAGS := -Wall -std=c++17 -O3 -DNDEBUG
 NATIVE := -march=native
 
 NAME := $(TARGET)
